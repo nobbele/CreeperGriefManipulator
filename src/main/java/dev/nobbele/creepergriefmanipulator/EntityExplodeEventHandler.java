@@ -38,7 +38,7 @@ public class EntityExplodeEventHandler implements Listener {
 
         for (Block block : toDestroy) {
             Collection<ItemStack> drops = block.getDrops();
-            ItemStack itemStack = !drops.isEmpty() ? drops.iterator().next() : null;
+            ItemStack itemStack = null;
             if (!drops.isEmpty()) {
                 itemStack = drops.iterator().next();
                 int amount = random.nextInt(itemStack.getAmount());
