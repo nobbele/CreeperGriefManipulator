@@ -25,8 +25,6 @@ public class EntityExplodeEventHandler implements Listener {
         if (!(event.getEntity() instanceof Creeper))
             return;
 
-        event.setCancelled(true);
-
         List<Block> blocks = event.blockList();
         List<Block> toDestroy = new ArrayList<>();
 
@@ -47,23 +45,24 @@ public class EntityExplodeEventHandler implements Listener {
 
             block.breakNaturally(itemStack);
         }
+
+        event.blockList().clear();
     }
 
     private boolean shouldPreserveBlock(EntityExplodeEvent event, Block block) {
         Vector dir = event.getLocation().toVector().subtract(block.getLocation().toVector());
         Vector dirFull = new Vector(dir.getX() > 0 ? 1 : 0, dir.getY() > 0 ? 1 : 0, dir.getZ() > 0 ? 1 : 0);
-        if (dirFull.getY() > 0) {
-            if (block.getType() != Material.GRASS_BLOCK) {
-                RayTraceResult raytrace = block.getWorld().rayTraceBlocks(block.getLocation().add(dirFull),
-                        dir.normalize(), dir.length());
+        if (block.getType() != Material.GRASS_BLOCK) {
+            Block hitBlock = block.getLocation().add(dirFull).getBlock();
 
-                if (raytrace != null) {
-                    Block hitBlock = raytrace.getHitBlock();
-
-                    if (hitBlock.getType() == Material.GRASS_BLOCK) {
-                        return true;
-                    }
+            if (hitBlock != null) {
+                if (hitBlock.getType() == Material.GRASS_BLOCK) {
+                    return true;
                 }
+            }
+        } else {
+            if (random.nextBoolean()) {
+                return true;
             }
         }
 

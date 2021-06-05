@@ -7,7 +7,8 @@
             "label": "Install",
             "type": "shell",
             "command": "mvn -B install",
-            "group": "none"
+            "group": "none",
+            "problemMatcher": []
         },
         {
             "label": "Copy & Install",
